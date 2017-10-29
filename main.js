@@ -9,7 +9,7 @@ const url = require('url');
 let win;
 
 function createWindow () {
-  win = new BrowserWindow({width: 800, height: 600});
+  win = new BrowserWindow({width: 1000, height: 600});
   
   console.log(process.env.HOST)
   if (process.env.NODE_ENV === 'development'){
