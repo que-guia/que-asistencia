@@ -9,24 +9,19 @@ const url = require('url');
 let win;
 
 function createWindow () {
-  // mainWindow = new BrowserWindow({
-  //   titleBarStyle: 'hidden',
-  //   width: 1281,
-  //   height: 800,
-  //   minWidth: 1281,
-  //   minHeight: 800,
-  //   show: true,
-  //   // icon: path.join(__dirname, 'assets/icons/png/64x64.png')
-  // });
-  //
-  // mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
-
   win = new BrowserWindow({width: 800, height: 600});
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'dist/index.html'),
-    protocol: 'file:',
-    slashes: true
-  }));
+  
+  console.log(process.env.HOST)
+  if (process.env.NODE_ENV === 'development'){
+    win.loadURL(process.env.HOST);
+    win.webContents.openDevTools();
+  } else {
+    win.loadURL(url.format({
+      pathname: path.join(__dirname, 'dist/index.html'),
+      protocol: 'file:',
+      slashes: true
+    }));
+  }
 
   win.on('closed', () => {
     win = null;
