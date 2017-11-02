@@ -1,0 +1,56 @@
+.viewer-wrapper {
+  border: 1px solid rgba(0,0,0,.03);
+  box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+  margin: 4px;
+
+  min-width: 600px;
+  max-width: 900px;
+  margin: auto;
+  flex: 1;
+
+  .viewer-title {
+    color: rgba(0,0,0,.54);
+    background: rgba(0,0,0,.03);
+    padding: 20px;
+
+    i.fa {
+      margin: 0 8px 0 0;
+    }
+  }
+
+  .viewer-body {
+    padding: 39px;
+    background-color: rgb(255,255,255);
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-container > * {
+    width: 100%;
+  }
+}
+
+button.mat-primary {
+  background-color: #0288d1;
+}
+
+mat-option {
+  height: auto;
+  margin: 8px;
+  background: rgba(0,0,0,.04);
+
+  .line {
+    height: auto;
+
+    span {
+      font-weight: 600;
+    }
+  }
+}
+
+.mat-option:focus:not(.mat-option-disabled), .mat-option:hover:not(.mat-option-disabled) {
+  background: rgba(0, 0, 0, 0.1);
+}

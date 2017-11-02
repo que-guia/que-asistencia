@@ -1,1 +1,53 @@
-Hello world
+<div class="viewer-wrapper">
+  <div class="viewer-title">
+    <i class="fa fa-user" aria-hidden="true"></i>
+    Registrar Asistente
+  </div>
+
+  <div class="viewer-body">
+    <form class="form-container">
+      <!-- <mat-form-field>
+        <input matInput placeholder="CI">
+      </mat-form-field> -->
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="CI" aria-label="CI" [matAutocomplete]="auto" [formControl]="stateCtrl">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let item of filteredItems | async" [value]="item.ci" (click)="selectItem(item)">
+            <div class="line ci">
+              <span>CI: </span> {{ item.ci }}
+            </div>
+            <div class="line name">
+              <span>Nombre: </span>{{ item.name }}
+            </div>
+            <div class="line lastname">
+              <span>Apellido(s): </span> {{ item.lastName }}
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Nombre" [(ngModel)]="selectedItem.name" name="name" disabled>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Apellidos" [(ngModel)]="selectedItem.lastName" name="lastName" disabled>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Pais" [(ngModel)]="selectedItem.country" name="country" disabled>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Ciudad" [(ngModel)]="selectedItem.city" name="city" disabled>
+      </mat-form-field>
+    </form>
+
+    <button mat-raised-button color="primary" (click)="registerItem()">REGISTRAR</button>
+  </div>
+</div>
+
+<ul>
+  <li></li>
+</ul>

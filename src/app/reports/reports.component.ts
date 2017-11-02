@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
@@ -13,8 +12,7 @@ export class ReportsComponent implements OnInit {
   items: Observable<any[]>;
   
   constructor(public db: AngularFireDatabase) {
-    this.items = db.list('items').valueChanges();
-    debugger    
+    this.items = db.list('items').valueChanges(); 
   }
 
   ngOnInit() { }
