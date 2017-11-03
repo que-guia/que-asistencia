@@ -17,6 +17,8 @@ import { ApoRoutingModule } from './app-routing.module';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireOfflineModule } from 'angularfire2-offline';
+
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -47,7 +49,8 @@ import { environment } from '../environments/environment';
     MatAutocompleteModule,
     // Firebase
     AngularFireModule.initializeApp(environment.firebase, 'que-asistencia'),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireOfflineModule
   ],
   providers: [
     AppDatabaseService
