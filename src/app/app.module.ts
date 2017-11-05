@@ -4,14 +4,19 @@ import { HttpModule } from '@angular/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule, MatCardModule, MatMenuModule,
-  MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule,
-  MatAutocompleteModule } from '@angular/material';
+        MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule,
+        MatAutocompleteModule, MatSnackBarModule, MatProgressSpinnerModule, 
+        MatTableModule } from '@angular/material';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 import { AppComponent } from './app.component';
 import { AppDatabaseService } from './app-database.service';
 import { MainPageComponent } from './main-page/main-page.component';
 import { RegisterItemComponent } from './register-item/register-item.component';
+import { RegisterItemMessageComponent } from './register-item/register-item-message/register-item-message.component';
 import { ReportsComponent } from './reports/reports.component';
+import { RegisteredItemsComponent } from './registered-items/registered-items.component';
+import { FindRegisteredItemComponent } from './find-registered-item/find-registered-item.component';
 
 import { ApoRoutingModule } from './app-routing.module';
 
@@ -26,7 +31,10 @@ import { environment } from '../environments/environment';
     AppComponent,
     MainPageComponent,
     RegisterItemComponent,
-    ReportsComponent
+    RegisterItemMessageComponent,
+    ReportsComponent,
+    RegisteredItemsComponent,
+    FindRegisteredItemComponent
   ],
   imports: [
     // Angular
@@ -47,10 +55,18 @@ import { environment } from '../environments/environment';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
     // Firebase
     AngularFireModule.initializeApp(environment.firebase, 'que-asistencia'),
     AngularFireDatabaseModule,
-    AngularFireOfflineModule
+    AngularFireOfflineModule,
+    // ChartJS
+    ChartsModule
+  ],
+  entryComponents: [
+    RegisterItemMessageComponent
   ],
   providers: [
     AppDatabaseService

@@ -2,10 +2,10 @@
   width: 900px;
   margin: auto;
   display: flex;
+  flex-wrap: wrap;
 
   .option-card {
-    width: 50%;
-    flex: 1 50%;
+    width: ~"calc(50% - 100px)";
     padding-top: 0;
     margin: 16px;
 
@@ -25,6 +25,18 @@
       color: rgba(0,0,0,0.54);
       font-size: 13px;
       line-height: 20px;
+    }
+
+    @media all and (max-width: 1024px) {
+
+    }
+
+    @media all and (max-width: 839px) {
+
+    }
+
+    @media all and (max-width: 480px) {
+      width: 100%;
     }
   }
 }

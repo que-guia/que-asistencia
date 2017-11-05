@@ -7,12 +7,11 @@
         Registrar Asistente
       </div>
       <div class="card-description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a arcu metus. Phasellus eu sem luctus, 
-          congue metus a, tristique leo. Duis non arcu mauris. Donec at velit augue. 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a arcu metus.
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button (click)="goToRegisterItem()">REGISTRAR</button>
+      <button mat-button (click)="goTo('register')">REGISTRAR</button>
     </mat-card-actions>
   </mat-card>
 
@@ -21,15 +20,46 @@
 
     <mat-card-content>
       <div class="card-title">
-        Reportes
+        Reporte de Inscritos
       </div>
       <div class="card-description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a arcu metus. Phasellus eu sem luctus, 
-          congue metus a, tristique leo. Duis non arcu mauris. Donec at velit augue. 
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a arcu metus.
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button (click)="goToShowReport()">MOSTRAR</button>
+      <button mat-button (click)="goTo('reports')">MOSTRAR</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="option-card">
+    <img class="card-image" src="assets/images/appindexing.png" alt="Reportes">
+
+    <mat-card-content>
+      <div class="card-title">
+        Buscar Inscrito
+      </div>
+      <div class="card-description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a arcu metus.
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="goTo('find')">MOSTRAR</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="option-card">
+    <img class="card-image" src="assets/images/predictions.png" alt="Reportes">
+
+    <mat-card-content>
+      <div class="card-title">
+        Sorteo
+      </div>
+      <div class="card-description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a arcu metus.
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="goTo('register')">MOSTRAR</button>
     </mat-card-actions>
   </mat-card>
 </div>

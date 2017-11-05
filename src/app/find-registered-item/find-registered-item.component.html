@@ -1,0 +1,209 @@
+<div class="viewer-wrapper">
+  <div class="viewer-title">
+    <i class="fa fa-user" aria-hidden="true"></i>
+    Buscar Inscrito
+  </div>
+
+  <div class="viewer-body">
+    <form class="form-container" [formGroup]="options">
+      <mat-form-field>
+        <input type="text" placeholder="Persona" aria-label="Persona" matInput [formControl]="stateCtrl" [matAutocomplete]="auto"
+          [(ngModel)]="searchText" (ngModelChange)="textHasChanged()">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredItems | async" [value]="option" (click)="selectItem(option)">
+            <div class="line ci">
+              <span>CI: </span> {{ option.ci }}
+            </div>
+            <div class="line name">
+              <span>Nombre: </span>{{ option.nombre }}
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
+    <button mat-raised-button color="primary" (click)="findItem()">BUSCAR</button>
+  </div>
+</div>
+
+<div class="viewer-wrapper" *ngIf="selectedItem">
+  <div class="viewer-title">
+    <i class="fa fa-info-circle" aria-hidden="true"></i>
+    Detalles
+  </div>
+
+  <div class="viewer-body no-padding">
+    <nav>
+      <h3>Informacion Personal</h3>
+
+      <form class="form-container">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Nombre" [(ngModel)]="selectedItem.nombre" [ngModelOptions]="{standalone: true}" disabled>
+        </mat-form-field>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="CI" [(ngModel)]="selectedItem.ci" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Ciudad" [(ngModel)]="selectedItem.ciudad" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Telf/Celular" [(ngModel)]="selectedItem.celular" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Correo" [(ngModel)]="selectedItem.correo" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </nav>
+
+    <nav>
+      <h3>Informacion del Registro</h3>
+
+      <form class="form-container">
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Coordinador" [(ngModel)]="selectedItem.coordinador" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Recibo" [(ngModel)]="selectedItem.recibo" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Fecha" [(ngModel)]="selectedItem.fecha" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </nav>
+
+    <nav>
+      <h3>Informacion del Paquete</h3>
+
+      <form class="form-container">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Paquete" [(ngModel)]="selectedItem.paquete" [ngModelOptions]="{standalone: true}" disabled>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Workshop / Dia y Hora" [(ngModel)]="selectedItem['workshop-dia-y-horario']" [ngModelOptions]="{standalone: true}" disabled>
+        </mat-form-field>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Recibo" [(ngModel)]="selectedItem.recibo" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Fecha" [(ngModel)]="selectedItem.fecha" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Libro" [(ngModel)]="selectedItem.libro" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Entregado?" [(ngModel)]="selectedItem['libro-entregado']" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Revista Clinica" [(ngModel)]="selectedItem['rev-clinica']" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Revista Dicas" [(ngModel)]="selectedItem['rev-dicas']" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </nav>
+
+    <nav>
+      <h3>Informacion del Pago</h3>
+
+      <form class="form-container">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Pago Efectivo / Persona que Recibio" [(ngModel)]="selectedItem['pago-efectivo-persona-que-recibio']" [ngModelOptions]="{standalone: true}" disabled>
+        </mat-form-field>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="A Cuenta" [(ngModel)]="selectedItem['a-cuenta']" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Saldo" [(ngModel)]="selectedItem.saldo" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Wester Union" [(ngModel)]="selectedItem['pago-por-wester-union']" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Bisa BS" [(ngModel)]="selectedItem['pago-por-bisa-bs']" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Bisa $" [(ngModel)]="selectedItem['pago-por-bisa-usd']" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Khipu" [(ngModel)]="selectedItem['pago-por-khipu']" [ngModelOptions]="{standalone: true}" disabled>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </nav>
+  </div>
+</div>
+  

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
 
-import { Item } from './item.class';
+import { Item } from './data-transfer-objects/item.class';
 
 @Injectable()
 export class AppDatabaseService {
@@ -13,7 +13,7 @@ export class AppDatabaseService {
   }
 
   getItems(): Promise<Item[]> {
-    return this.http.get("assets/js/temp-people.json")
+    return this.http.get("assets/js/temp-registered-items.json")
                     .toPromise()
                     .then(response => response.json() as Item[]);
 

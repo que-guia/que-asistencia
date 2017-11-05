@@ -12,11 +12,7 @@ export class MainPageComponent implements OnInit {
 
   ngOnInit() { }
 
-  goToRegisterItem() {
-    this.router.navigate(['/register']);
-  }
-
-  goToShowReport() {
-    this.router.navigate(['/reports']);
+  goTo(route) {
+    this.router.navigate([`/${route}`]);
   }
 }
