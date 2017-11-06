@@ -46,6 +46,7 @@
     "ng2-charts": "^1.6.0",
     "rxjs": "^5.4.2",
     "shortid": "^2.2.8",
+    "underscore": "^1.8.3",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

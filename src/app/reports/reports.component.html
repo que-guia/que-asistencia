@@ -1,14 +1,13 @@
 <div class="viewer-wrapper report chart">
   <div class="viewer-title">
     <i class="fa fa-area-chart" aria-hidden="true"></i>
-    Reporte
+    Reporte de Asistencia
   </div>
 
   <div class="viewer-body">
-    <canvas baseChart
+    <canvas #testChart='base-chart' baseChart
       class="chart"
       [datasets]="datasets"
-      [labels]="labels"
       [options]="options"
       [chartType]="'line'">
   </canvas>

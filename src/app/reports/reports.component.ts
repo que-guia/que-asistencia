@@ -4,6 +4,9 @@ import { AfoListObservable, AngularFireOfflineDatabase } from 'angularfire2-offl
 import { Observable } from 'rxjs/Observable';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BaseChartDirective } from 'ng2-charts/ng2-charts';
+import * as moment from 'moment';
+import * as _ from 'underscore';
 
 import { RegisterItem } from '../data-transfer-objects/register-item.class'
 
@@ -26,28 +29,40 @@ export class ReportsComponent implements OnInit {
   displayedColumns = ['ci', 'nombre', 'materialWasDelivered', 'registeredDate'];
 
   @ViewChild('filter') filter: ElementRef;
+  @ViewChild('testChart') testChart: BaseChartDirective;
 
-  private datasets = [
-    {
-      label: "# of Votes",
-      data: [12, 19, 3, 5, 2, 3]
-    }
-  ];
+  datasets = [{
+    fill: false,
+    borderColor: '#ff4081',
+    data: [],
+  }];
 
-  private labels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
-
-  private options = {
+  options = {
+    responsive: true,
+    maintainAspectRatio: false,
     legend: {
       display: false
     },
-    maintainAspectRatio: false,
     scales: {
       xAxes: [{
-        display: false
+        type: "time",
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Hora de Registro'
+        },
+        ticks: {
+          major: {
+            fontStyle: 'bold',
+            fontColor: '#ff4081'
+          }
+        }
       }],
       yAxes: [{
-        ticks: {
-          beginAtZero: true
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Asistentes'
         }
       }]
     }
@@ -55,6 +70,22 @@ export class ReportsComponent implements OnInit {
   
   constructor(public db: AngularFireOfflineDatabase) {
     this.tableDB = new TableDatabase(db);
+    this.db.list('registered-items').subscribe(data => {
+      const tempEntries = {};
+      const [dataset] = this.datasets;
+      this.datasets[0].data = [];
+
+      (data as RegisterItem[]).forEach(({registeredDate}) => {
+        tempEntries[registeredDate] = (tempEntries[registeredDate] || 0) + 1;
+      });
+
+      _.each(tempEntries, (y, date) => {
+        const x = moment(date, 'DD-MM-YYYY HH:mm').format();
+        dataset.data.push({x, y})
+      });
+ 
+      this.datasets = this.datasets.slice();
+    });
   }
 
   ngOnInit() {
@@ -66,7 +97,6 @@ export class ReportsComponent implements OnInit {
       .subscribe(() => {
         if (!this.dataSource) { return; }
         this.dataSource.filter = this.filter.nativeElement.value;
-        // console.log(this.filter.nativeElement.value)
       });
   }
 }
@@ -81,7 +111,7 @@ export class TableDatabase {
   constructor(public db: AngularFireOfflineDatabase) {
     this.db.list('registered-items').subscribe(data => {
       this.dataChange.next(data as RegisterItem[]);
-    })
+    });
   }
 }
 
