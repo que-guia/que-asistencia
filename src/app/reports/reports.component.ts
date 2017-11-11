@@ -24,6 +24,7 @@ import 'rxjs/add/observable/fromEvent';
 })
 
 export class ReportsComponent implements OnInit {
+  isReadOnly: boolean;
   dataSource: TableDataSource | null;
   tableDB: TableDatabase | null;
   displayedColumns = ['ci', 'nombre', 'materialWasDelivered', 'registeredDate'];
@@ -75,7 +76,8 @@ export class ReportsComponent implements OnInit {
       const [dataset] = this.datasets;
       this.datasets[0].data = [];
 
-      (data as RegisterItem[]).forEach(({registeredDate}) => {
+      (data as RegisterItem[]).forEach(({dateEntries}) => {
+        const [registeredDate] = dateEntries;
         tempEntries[registeredDate] = (tempEntries[registeredDate] || 0) + 1;
       });
 

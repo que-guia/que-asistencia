@@ -49,14 +49,14 @@
         <ng-container matColumnDef="materialWasDelivered">
           <mat-header-cell class="center" *matHeaderCellDef> Material Entregado? </mat-header-cell>
           <mat-cell class="center" *matCellDef="let row">
-            <mat-checkbox [(ngModel)]="row.materialWasDelivered"></mat-checkbox>
+            <mat-checkbox [(ngModel)]="row.materialWasDelivered" ([readonly])="isReadOnly"></mat-checkbox>
           </mat-cell>
         </ng-container>
 
         <!-- Color Column -->
         <ng-container matColumnDef="registeredDate">
           <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
-          <mat-cell *matCellDef="let row" [style.color]="row.color"> {{ row.registeredDate }} </mat-cell>
+          <mat-cell *matCellDef="let row" [style.color]="row.color"> {{ row.dateEntries[0] }} </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

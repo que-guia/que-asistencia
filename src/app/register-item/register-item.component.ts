@@ -3,6 +3,8 @@ import { FormControl, FormBuilder, FormGroup} from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import * as shortid  from 'shortid';
+import * as moment from 'moment';
+import * as _ from 'underscore';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
@@ -11,6 +13,7 @@ import { AfoObjectObservable, AfoListObservable, AngularFireOfflineDatabase } fr
 import { AppDatabaseService } from '../app-database.service';
 import { Item } from '../data-transfer-objects/item.class';
 import { RegisterItem } from '../data-transfer-objects/register-item.class';
+import { FORMAT_DATE_COMPLETE } from '../app.constans';
 
 import { RegisterItemMessageComponent } from './register-item-message/register-item-message.component';
 
@@ -61,11 +64,25 @@ export class RegisterItemComponent implements OnInit {
   }
 
   registerItem() {
-    const newID = shortid.generate();
+    const itemID = this.selectedItem.ci ? `${this.selectedItem.ci}`.replace(/\s/g,'').replace('-', '_') : shortid.generate();
     const itemToRegister = new RegisterItem(this.selectedItem, this.materialWasDelivered);
+    
+    const item = this.offlineDatabase.object(`/registered-items/${itemID}`);
+    item.subscribe(dbItem => {
+      itemToRegister.dateEntries = dbItem['registeredDates'] || [];
+    })
 
-    this.offlineDatabase
-      .object(`/registered-items/${newID}`)
+    const newEntryDate = moment(Date.now()).format(FORMAT_DATE_COMPLETE);
+    const indexDateEntry = _.findIndex(itemToRegister.dateEntries,
+      dataEntry => moment(dataEntry, FORMAT_DATE_COMPLETE).isSame(Date.now(), 'day'));
+    
+    if (indexDateEntry >= 0) {
+      itemToRegister.dateEntries[indexDateEntry] = newEntryDate;
+    } else {
+      itemToRegister.dateEntries.push(newEntryDate);
+    }
+
+    item
       .update(itemToRegister)
       .then(() => {
         console.info('ITEM has been registered');
@@ -80,9 +97,10 @@ export class RegisterItemComponent implements OnInit {
     this.filteredCI = '';
   }
 
-  filterItems(ci: string) {
+  filterItems(text: string) {
     return (this.items || [])
-      .filter(item => item.ci.toString().indexOf(ci.toString().toLowerCase()) === 0)
+      .filter(item => item.ci.toString().indexOf(text.toString().toLowerCase()) === 0 ||
+        item.nombre.toLowerCase().indexOf(text.toString().toLowerCase()) !== -1)
       .slice(0, 5);
   }
 

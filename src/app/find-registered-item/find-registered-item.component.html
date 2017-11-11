@@ -160,14 +160,14 @@
 
       <form class="form-container">
         <mat-form-field class="full-width">
-          <input matInput placeholder="Pago Efectivo / Persona que Recibio" [(ngModel)]="selectedItem['pago-efectivo-persona-que-recibio']" [ngModelOptions]="{standalone: true}" disabled>
+          <input matInput placeholder="Pago Efectivo / Persona que Recibio" [(ngModel)]="selectedItem.pagoEfectivoPersonaQueRecibio" [ngModelOptions]="{standalone: true}" disabled>
         </mat-form-field>
 
         <table cellspacing="0">
           <tr>
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="A Cuenta" [(ngModel)]="selectedItem['a-cuenta']" [ngModelOptions]="{standalone: true}" disabled>
+                <input matInput placeholder="A Cuenta" [(ngModel)]="selectedItem.aCuenta" [ngModelOptions]="{standalone: true}" disabled>
               </mat-form-field>
             </td>
             <td>
@@ -182,22 +182,22 @@
           <tr>
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Wester Union" [(ngModel)]="selectedItem['pago-por-wester-union']" [ngModelOptions]="{standalone: true}" disabled>
+                <input matInput placeholder="Wester Union" [(ngModel)]="selectedItem.pagoPorWesterUnion" [ngModelOptions]="{standalone: true}" disabled>
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Bisa BS" [(ngModel)]="selectedItem['pago-por-bisa-bs']" [ngModelOptions]="{standalone: true}" disabled>
+                <input matInput placeholder="Bisa BS" [(ngModel)]="selectedItem.pagoPorBisaBs" [ngModelOptions]="{standalone: true}" disabled>
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Bisa $" [(ngModel)]="selectedItem['pago-por-bisa-usd']" [ngModelOptions]="{standalone: true}" disabled>
+                <input matInput placeholder="Bisa $" [(ngModel)]="selectedItem.pagoPorBisaUsd" [ngModelOptions]="{standalone: true}" disabled>
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Khipu" [(ngModel)]="selectedItem['pago-por-khipu']" [ngModelOptions]="{standalone: true}" disabled>
+                <input matInput placeholder="Khipu" [(ngModel)]="selectedItem.pagoPorKhipu" [ngModelOptions]="{standalone: true}" disabled>
               </mat-form-field>
             </td>
           </tr>
