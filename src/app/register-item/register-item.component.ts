@@ -13,7 +13,7 @@ import { AfoObjectObservable, AfoListObservable, AngularFireOfflineDatabase } fr
 import { AppDatabaseService } from '../app-database.service';
 import { Item } from '../data-transfer-objects/item.class';
 import { RegisterItem } from '../data-transfer-objects/register-item.class';
-import { FORMAT_DATE_COMPLETE } from '../app.constans';
+import { FORMAT_DATE_COMPLETE } from '../app.constants';
 
 import { RegisterItemMessageComponent } from './register-item-message/register-item-message.component';
 

@@ -2,6 +2,7 @@ export class Item {
   recibo: Number;
   coordinador: String;
   fecha: Date;
+  fechaRegistro: Date;
   nombre: String;
   ci: String;
   ciudad: String;
@@ -13,11 +14,24 @@ export class Item {
   workshopDiaYHorario: String;
   revClinica: Number;
   revDicas: Number;
-  aCuenta: Number;
-  saldo: Number;
+  aCuenta: String;
+  saldo: String;
   pagoPorWesterUnion: String;
   pagoPorBisaBs: String;
   pagoPorBisaUsd: String;
   pagoPorKhipu: String;
   pagoEfectivoPersonaQueRecibio: String;
+
+  constructor() {
+    this.libro = 'NO';
+    this.libroEntregado = 'NO';
+    this.revClinica = 0;
+    this.aCuenta = '0';
+    this.saldo = '0';
+    this.revDicas = 0;
+    this.pagoPorWesterUnion = 'NO';
+    this.pagoPorBisaBs = 'NO';
+    this.pagoPorBisaUsd = 'NO';
+    this.pagoPorKhipu = 'NO';
+  }
 }

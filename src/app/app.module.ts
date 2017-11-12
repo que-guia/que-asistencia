@@ -6,7 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule, MatCardModule, MatMenuModule,
         MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule,
         MatAutocompleteModule, MatSnackBarModule, MatProgressSpinnerModule, 
-        MatTableModule } from '@angular/material';
+        MatTableModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule,
+        DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 import { AppComponent } from './app.component';
@@ -17,6 +18,9 @@ import { RegisterItemMessageComponent } from './register-item/register-item-mess
 import { ReportsComponent } from './reports/reports.component';
 import { RegisteredItemsComponent } from './registered-items/registered-items.component';
 import { FindRegisteredItemComponent } from './find-registered-item/find-registered-item.component';
+import { CreateNewItemComponent } from './create-new-item/create-new-item.component';
+import { APP_DATE_FORMATS } from './app.constants';
+import { AppDateAdapter } from './app.adapters';
 
 import { ApoRoutingModule } from './app-routing.module';
 
@@ -34,7 +38,8 @@ import { environment } from '../environments/environment';
     RegisterItemMessageComponent,
     ReportsComponent,
     RegisteredItemsComponent,
-    FindRegisteredItemComponent
+    FindRegisteredItemComponent,
+    CreateNewItemComponent
   ],
   imports: [
     // Angular
@@ -58,6 +63,9 @@ import { environment } from '../environments/environment';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     // Firebase
     AngularFireModule.initializeApp(environment.firebase, 'que-asistencia'),
     AngularFireDatabaseModule,
@@ -69,7 +77,9 @@ import { environment } from '../environments/environment';
     RegisterItemMessageComponent
   ],
   providers: [
-    AppDatabaseService
+    AppDatabaseService,
+    { provide: DateAdapter, useClass: AppDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
   ],
   bootstrap: [AppComponent]
 })

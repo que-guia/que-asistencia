@@ -1,0 +1,222 @@
+<div class="viewer-wrapper">
+  <div class="viewer-title">
+    <i class="fa fa-address-card-o" aria-hidden="true"></i>
+    Registrar Nuevo Asistente
+  </div>
+
+  <div class="viewer-body no-padding">
+    <nav>
+      <h3>Informacion Personal</h3>
+
+      <form class="form-container">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Nombre" [formControl]="nombre" [(ngModel)]="item.nombre" required>
+          <mat-error *ngIf="nombre.invalid">{{ getErrorMessage('nombre') }}</mat-error>
+          <!-- <mat-error *ngIf="ciInvalid">EL CI ya se encuentra en uso</mat-error> -->
+        </mat-form-field>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="CI" [formControl]="ci" [(ngModel)]="item.ci" required>
+                <mat-error *ngIf="ci.invalid">{{ getErrorMessage('ci') }}</mat-error>
+              </mat-form-field>
+            </td>
+
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Ciudad" [(ngModel)]="item.ciudad" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Telf/Celular" [formControl]="celular" [(ngModel)]="item.celular" required>
+                <mat-error *ngIf="celular.invalid">{{ getErrorMessage('celular') }}</mat-error>
+              </mat-form-field>
+            </td>
+
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Correo" [(ngModel)]="item.correo" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </nav>
+
+    <nav>
+      <h3>Informacion del Registro</h3>
+
+      <form class="form-container">
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Coordinador" [(ngModel)]="item.coordinador" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Recibo" [(ngModel)]="item.recibo" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput [matDatepicker]="pickerFechaRegistro" placeholder="Fecha de Registro" [(ngModel)]="item.fechaRegistro" [ngModelOptions]="{standalone: true}" disabled>
+                <mat-datepicker-toggle matSuffix [for]="pickerFechaRegistro"></mat-datepicker-toggle>
+                <mat-datepicker #pickerFechaRegistro></mat-datepicker>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </nav>
+
+    <nav>
+      <h3>Informacion del Paquete</h3>
+
+      <form class="form-container">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Paquete" [(ngModel)]="item.paquete" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Workshop / Dia y Hora" [(ngModel)]="item['workshop-dia-y-horario']" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Recibo" [(ngModel)]="item.recibo" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput [matDatepicker]="picker" placeholder="Fecha" [(ngModel)]="item.fecha" [ngModelOptions]="{standalone: true}" disabled>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field>
+                <mat-select placeholder="Libro" [value]="item.libro">
+                  <mat-option value="SI">SI</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <mat-select placeholder="Entregado" [value]="item.libroEntregado">
+                  <mat-option value="SI">SI</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Revista Clinica" [(ngModel)]="item.revClinica" [ngModelOptions]="{standalone: true}" type="number">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Revista Dicas" [(ngModel)]="item.revDicas" [ngModelOptions]="{standalone: true}" type="number">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </nav>
+
+    <nav>
+      <h3>Informacion del Pago</h3>
+
+      <form class="form-container">
+        <table cellspacing="0">
+          <tr>
+            <td class="single-option">
+              <mat-form-field>
+                <mat-select placeholder="Pago Efectivo" [value]="item['pago-efectivo']">
+                  <mat-option value="SI">SI</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Persona que Recibio" [formControl]="personaQueRecibio" [(ngModel)]="item['persona-que-recibio']" required>
+                <mat-error *ngIf="personaQueRecibio.invalid">{{ getErrorMessage('personaQueRecibio') }}</mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="A Cuenta" [(ngModel)]="item.aCuenta" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Saldo" [(ngModel)]="item.saldo" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Wester Union" [value]="item.pagoPorWesterUnion">
+                  <mat-option value="SI">SI</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Bisa BS" [value]="item.pagoPorBisaBs">
+                  <mat-option value="SI">SI</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Bisa $" [value]="item.pagoPorBisaUsd">
+                  <mat-option value="SI">SI</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Khipu" [value]="item.pagoPorKhipu">
+                  <mat-option value="SI">SI</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </nav>
+
+    <button mat-raised-button color="primary" (click)="registerItem()">REGISTRAR</button>
+  </div>
+</div>
