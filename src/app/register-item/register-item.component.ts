@@ -58,9 +58,7 @@ export class RegisterItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.appDatabase.getItems().then(items => {
-      this.items = items
-    });
+    this.appDatabase.items.subscribe(data => this.items = data)
   }
 
   registerItem() {

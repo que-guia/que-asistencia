@@ -50,7 +50,7 @@ export class CreateNewItemComponent implements OnInit {
     this.celular = new FormControl(this.item.celular, [Validators.required]);
     this.personaQueRecibio = new FormControl(this.item['persona-que-recibio'], [Validators.required]);
 
-    this.appDatabase.getItems().then(items => this.items = items);
+    this.appDatabase.items.subscribe(data => this.items = data);
   }
 
   ngOnInit() { }
