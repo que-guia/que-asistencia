@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { AfoObjectObservable, AfoListObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
+import { MatSnackBar } from '@angular/material';
 import * as moment from 'moment';
 import * as shortid  from 'shortid';
+import * as _ from 'underscore';
 
+import { CreateItemMessageComponent } from './create-new-item-message/create-new-item-message.component'
 import { AppDatabaseService } from '../app-database.service';
 import { Item } from '../data-transfer-objects/item.class';
 import { Error } from './create-new-item.errors';
@@ -29,9 +32,9 @@ export class CreateNewItemComponent implements OnInit {
   items: Item[];
   error: Error;
   formControl: FormControl;
-  ciInvalid: boolean = false;
   
   constructor(private fb: FormBuilder,
+              private snackBar: MatSnackBar,
               private appDatabase: AppDatabaseService,
               private offlineDatabase: AngularFireOfflineDatabase) {
     this.error = new Error();
@@ -53,18 +56,47 @@ export class CreateNewItemComponent implements OnInit {
   ngOnInit() { }
 
   registerItem() {
-    this.item.pagoEfectivoPersonaQueRecibio = `${this.item['pago-efectivo']} - ${this.item['persona-que-recibio']}`;
-  
-    // this.error.nombre = 'Ingrese el Nombre';
+    if (this.nombre.errors || this.ci.errors || this.celular.errors || this.personaQueRecibio .errors) {
+      this.snackBar.openFromComponent(CreateItemMessageComponent, {
+        data: {
+          error: 'Verifique los campos requeridos'
+        },
+        duration: 800,
+      });
 
-    // this.offlineDatabase.object(`/items/${this.item.ci}`)
-    //   .update(this.item)
-    //   .then(() => {
-    //     console.info('ITEM has been registered');
-    //   })
-    //   .catch();
+      return; 
+    }
 
-    this.ciInvalid = true;
+    const itemID = this.item.ci ? `${this.item.ci}`.replace(/\s/g,'').replace('-', '_') : shortid.generate();
+    const newItem = _.clone(this.item);
+
+    newItem.pagoEfectivoPersonaQueRecibio = `${this.item['pago-efectivo']} - ${this.item['persona-que-recibio']}`;
+    newItem.workshopDiaYHorario = `${this.item['workshop']} / ${this.item['dia-y-horario']}`;
+
+    delete newItem['pago-efectivo'];
+    delete newItem['persona-que-recibio'];
+    delete newItem['workshop'];
+    delete newItem['dia-y-horario'];
+    
+    this.offlineDatabase.object(`/items/${itemID}`)
+      .update(newItem)
+      .then(() => {
+        console.info('ITEM has been registered');
+      })
+      .catch();
+
+    this.snackBar.openFromComponent(CreateItemMessageComponent, {
+      data: {
+        success: 'Asistente Registrado'
+      },
+      duration: 800,
+    });
+
+    this.item = new Item();
+    this.nombre.reset();
+    this.ci.reset();
+    this.celular.reset();
+    this.personaQueRecibio.reset();
   }
 
   getErrorMessage(field: string): string {

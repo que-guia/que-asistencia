@@ -55,7 +55,11 @@
       <h3>Informacion del Registro</h3>
 
       <form class="form-container">
-        <table cellspacing="0">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Coordinador" [(ngModel)]="item.coordinador" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <!-- <table cellspacing="0">
           <tr>
             <td>
               <mat-form-field class="full-width">
@@ -75,7 +79,7 @@
               </mat-form-field>
             </td>
           </tr>
-        </table>
+        </table> -->
       </form>
     </nav>
 
@@ -87,9 +91,22 @@
           <input matInput placeholder="Paquete" [(ngModel)]="item.paquete" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
 
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Workshop / Dia y Hora" [(ngModel)]="item['workshop-dia-y-horario']" [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Workshop" [(ngModel)]="item.workshop" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Dia y Horario" [(ngModel)]="item['dia-y-horario']" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
 
         <table cellspacing="0">
           <tr>

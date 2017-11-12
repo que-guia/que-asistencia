@@ -19,6 +19,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { RegisteredItemsComponent } from './registered-items/registered-items.component';
 import { FindRegisteredItemComponent } from './find-registered-item/find-registered-item.component';
 import { CreateNewItemComponent } from './create-new-item/create-new-item.component';
+import { CreateItemMessageComponent } from './create-new-item/create-new-item-message/create-new-item-message.component'
 import { APP_DATE_FORMATS } from './app.constants';
 import { AppDateAdapter } from './app.adapters';
 
@@ -39,7 +40,8 @@ import { environment } from '../environments/environment';
     ReportsComponent,
     RegisteredItemsComponent,
     FindRegisteredItemComponent,
-    CreateNewItemComponent
+    CreateNewItemComponent,
+    CreateItemMessageComponent
   ],
   imports: [
     // Angular
@@ -74,7 +76,8 @@ import { environment } from '../environments/environment';
     ChartsModule
   ],
   entryComponents: [
-    RegisterItemMessageComponent
+    RegisterItemMessageComponent,
+    CreateItemMessageComponent
   ],
   providers: [
     AppDatabaseService,
