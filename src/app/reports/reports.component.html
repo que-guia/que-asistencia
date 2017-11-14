@@ -20,48 +20,13 @@
     Lista de Registrados
   </div>
 
-  <div class="viewer-body">
+  <div class="viewer-body report-detail">
     <div class="example-container mat-elevation-z8">
-      <div class="example-header">
-        <mat-form-field floatPlaceholder="never">
-          <input matInput #filter placeholder="Buscar Persona">
-        </mat-form-field>
-      </div>
-
-      <mat-table #table [dataSource]="dataSource">
-
-        <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-
-        <!-- ID Column -->
-        <ng-container matColumnDef="ci">
-          <mat-header-cell *matHeaderCellDef> CI </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{ row.ci }} </mat-cell>
-        </ng-container>
-
-        <!-- Progress Column -->
-        <ng-container matColumnDef="nombre">
-          <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{ row.nombre }}</mat-cell>
-        </ng-container>
-
-        <!-- Name Column -->
-        <ng-container matColumnDef="materialWasDelivered">
-          <mat-header-cell class="center" *matHeaderCellDef> Material Entregado? </mat-header-cell>
-          <mat-cell class="center" *matCellDef="let row">
-            <mat-checkbox [(ngModel)]="row.materialWasDelivered" ([readonly])="isReadOnly"></mat-checkbox>
-          </mat-cell>
-        </ng-container>
-
-        <!-- Color Column -->
-        <ng-container matColumnDef="registeredDate">
-          <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
-          <mat-cell *matCellDef="let row" [style.color]="row.color"> {{ row.dateEntries[0] }} </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
+      <mat-tab-group [(selectedIndex)]="activeTabIndex">
+        <mat-tab *ngFor="let date of dates || []" label="{{ date.value }}" isActive="">
+          <report-by-day [date]="date.value"></report-by-day>
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </div>
 </div>

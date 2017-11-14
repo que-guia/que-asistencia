@@ -7,6 +7,7 @@ import { MatButtonModule, MatCheckboxModule, MatCardModule, MatMenuModule,
         MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule,
         MatAutocompleteModule, MatSnackBarModule, MatProgressSpinnerModule, 
         MatTableModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule,
+        MatTabsModule,
         DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
@@ -20,6 +21,7 @@ import { RegisteredItemsComponent } from './registered-items/registered-items.co
 import { FindRegisteredItemComponent } from './find-registered-item/find-registered-item.component';
 import { CreateNewItemComponent } from './create-new-item/create-new-item.component';
 import { CreateItemMessageComponent } from './create-new-item/create-new-item-message/create-new-item-message.component'
+import { ReportByDayComponent } from './reports/report-by-day/report-by-day.component';
 import { APP_DATE_FORMATS } from './app.constants';
 import { AppDateAdapter } from './app.adapters';
 
@@ -41,7 +43,8 @@ import { environment } from '../environments/environment';
     RegisteredItemsComponent,
     FindRegisteredItemComponent,
     CreateNewItemComponent,
-    CreateItemMessageComponent
+    CreateItemMessageComponent,
+    ReportByDayComponent
   ],
   imports: [
     // Angular
@@ -68,6 +71,7 @@ import { environment } from '../environments/environment';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTabsModule,
     // Firebase
     AngularFireModule.initializeApp(environment.firebase, 'que-asistencia'),
     AngularFireDatabaseModule,

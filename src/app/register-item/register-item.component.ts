@@ -51,6 +51,7 @@ export class RegisterItemComponent implements OnInit {
     });
 
     this.filteredItems = this.stateCtrl.valueChanges
+      .debounceTime(100)
       .startWith(null)
       .map(item => item ? this.filterItems(item) : null);
 
@@ -67,7 +68,7 @@ export class RegisterItemComponent implements OnInit {
     
     const item = this.offlineDatabase.object(`/registered-items/${itemID}`);
     item.subscribe(dbItem => {
-      itemToRegister.dateEntries = dbItem['registeredDates'] || [];
+      itemToRegister.dateEntries = dbItem['dateEntries'] || [];
     })
 
     const newEntryDate = moment(Date.now()).format(FORMAT_DATE_COMPLETE);
