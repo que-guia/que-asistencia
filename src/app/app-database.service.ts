@@ -5,43 +5,47 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 import { Item } from './data-transfer-objects/item.class';
+import { RegisterItem } from './data-transfer-objects/register-item.class';
 import { Promise } from 'firebase/app';
 import { forEach } from '@angular/router/src/utils/collection';
 
 import * as _ from 'underscore';
+import { startWith } from 'rxjs/operator/startWith';
 
 @Injectable()
 export class AppDatabaseService {
-  dates = ['12/11/2017', '13/11/2017', '14/11/2017'];
-  items: BehaviorSubject<Item[]> = new BehaviorSubject<Item[]>([]);
-  registeredItems = {};
   currentItems: Item[] = [];
+  items: BehaviorSubject<Item[]> = new BehaviorSubject<Item[]>([]);
+  registeredItems: BehaviorSubject<RegisterItem[]> = new BehaviorSubject<RegisterItem[]>([]);
 
   constructor(private http: Http,
               public db: AngularFireOfflineDatabase) {
-    
-    this.dates.forEach(date => {
-      this.registeredItems[date] = new BehaviorSubject<Item[]>([]);
-    }); 
-
     this.http.get("assets/js/temp-registered-items.json")
       .toPromise()
-      .then(response => this.currentItems = response.json() as Item[]);
+      .then(response => {
+        this.currentItems = response.json() as Item[];
+        this.items.next(this.currentItems);
+      });
 
     this.db.list('items').subscribe(data => {
-      this.items.next([...this.currentItems, ...data as Item[]]);
+      // Bulk
+      const items = data as Item[];
+      _.each(items, ({ci, nombre, ciudad, celular, correo}) => {
+        const foundIndex = _.findIndex(this.currentItems, item => `${item.ci}` === `${ci}`);
+        
+        if (foundIndex >= 0) {
+          _.extend(this.currentItems[foundIndex], {ci, nombre, ciudad, celular, correo});  
+        }
+      });
+
+      // Publish
+      this.items.next([...this.currentItems, ...items]);
     });
   }
 
   loadRegisteredItems() {
     this.db.list('registered-items').subscribe(data => {
-      this.dates.forEach(date => {
-        const registeredItems = (data || []).filter(({dateEntries}) => {
-          return (dateEntries || []).find(dateEntry => `${dateEntry}`.startsWith(date));
-        });
-
-        this.registeredItems[date].next(registeredItems);
-      });
+      this.registeredItems.next(data);
     });
   }
 }

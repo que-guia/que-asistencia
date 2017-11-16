@@ -25,7 +25,10 @@ export class CreateNewItemComponent implements OnInit {
   personaQueRecibio: FormControl;
   celular: FormControl;
   nombre: FormControl;
+  tipoDePago: FormControl;
   ci: FormControl;
+  isValidCI = false;
+  allowNoValidCI = false;
   @Input() item: Item;
   @Input() options = ['NO', 'SI'];
 
@@ -35,7 +38,7 @@ export class CreateNewItemComponent implements OnInit {
   
   constructor(private fb: FormBuilder,
               private snackBar: MatSnackBar,
-              private appDatabase: AppDatabaseService,
+              private db: AppDatabaseService,
               private offlineDatabase: AngularFireOfflineDatabase) {
     this.error = new Error();
     this.formControl = new FormControl();
@@ -49,14 +52,34 @@ export class CreateNewItemComponent implements OnInit {
     this.ci = new FormControl(this.item.ci, [Validators.required, this.ValidateCI()]);
     this.celular = new FormControl(this.item.celular, [Validators.required]);
     this.personaQueRecibio = new FormControl(this.item['persona-que-recibio'], [Validators.required]);
+    this.tipoDePago = new FormControl(this.item.tipoDePago, [Validators.required]);
 
-    this.appDatabase.items.subscribe(data => this.items = data);
+    this.db.items.subscribe(data => this.items = data);
   }
 
   ngOnInit() { }
 
   registerItem() {
-    if (this.nombre.errors || this.ci.errors || this.celular.errors || this.personaQueRecibio .errors) {
+    if (this.ci.hasError('validCI') && !this.isValidCI) {
+      this.snackBar.openFromComponent(CreateItemMessageComponent, {
+        data: {
+          error: 'Verifique el CI del Asistente'
+        },
+        duration: 800,
+      });
+
+      return;
+    }
+    
+    if (this.nombre.errors || this.ci.hasError('required') || this.celular.errors ||
+      this.personaQueRecibio.errors || this.tipoDePago.errors) {
+
+      this.nombre.markAsTouched();
+      this.ci.markAsTouched();
+      this.celular.markAsTouched();
+      this.personaQueRecibio.markAsTouched();
+      this.tipoDePago.markAsTouched();
+
       this.snackBar.openFromComponent(CreateItemMessageComponent, {
         data: {
           error: 'Verifique los campos requeridos'
@@ -67,18 +90,17 @@ export class CreateNewItemComponent implements OnInit {
       return; 
     }
 
-    const itemID = this.item.ci ? `${this.item.ci}`.replace(/\s/g,'').replace('-', '_') : shortid.generate();
     const newItem = _.clone(this.item);
-
-    newItem.pagoEfectivoPersonaQueRecibio = `${this.item['pago-efectivo']} - ${this.item['persona-que-recibio']}`;
     newItem.workshopDiaYHorario = `${this.item['workshop']} / ${this.item['dia-y-horario']}`;
+    newItem.hasProblemWithCI = this.ci.hasError('validCI');
+    newItem.id = !newItem.hasProblemWithCI ? `${this.item.ci}`.replace(/\s/g,'').replace('-', '_') :
+      shortid.generate();
 
-    delete newItem['pago-efectivo'];
     delete newItem['persona-que-recibio'];
     delete newItem['workshop'];
     delete newItem['dia-y-horario'];
-    
-    this.offlineDatabase.object(`/items/${itemID}`)
+
+    this.offlineDatabase.object(`/items/${newItem.id}`)
       .update(newItem)
       .then(() => {
         console.info('ITEM has been registered');
@@ -93,6 +115,8 @@ export class CreateNewItemComponent implements OnInit {
     });
 
     this.item = new Item();
+    this.isValidCI = false;
+    this.allowNoValidCI = false;
     this.nombre.reset();
     this.ci.reset();
     this.celular.reset();
@@ -115,6 +139,9 @@ export class CreateNewItemComponent implements OnInit {
     if (field === 'personaQueRecibio') {
       errorMessage = this.personaQueRecibio.hasError('required') ? 'Persona que Recibio es requerido' : '';
     }
+    if (field === 'tipoDePago') {
+      errorMessage = this.tipoDePago.hasError('required') ? 'Tipo de Pago es requerido' : '';
+    }
 
     return errorMessage;
   }
@@ -123,9 +150,12 @@ export class CreateNewItemComponent implements OnInit {
     const me = this;
 
     return function(control: AbstractControl) {
+      me.isValidCI = false;
+      me.allowNoValidCI = false;
       const foundCI = (me.items || []).find(item => `${item.ci}`.toLowerCase() === `${control.value || ''}`.toLowerCase());
       
       if (foundCI) {
+        me.allowNoValidCI = true;
         return { validCI: true }
       }
     

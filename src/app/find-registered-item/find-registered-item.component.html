@@ -38,20 +38,20 @@
 
       <form class="form-container">
         <mat-form-field class="full-width">
-          <input matInput placeholder="Nombre" [(ngModel)]="selectedItem.nombre" [ngModelOptions]="{standalone: true}" disabled>
+          <input matInput placeholder="Nombre" [(ngModel)]="selectedItem.nombre" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
 
         <table cellspacing="0">
           <tr>
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="CI" [(ngModel)]="selectedItem.ci" [ngModelOptions]="{standalone: true}" disabled>
+                <input matInput placeholder="CI" [(ngModel)]="selectedItem.ci" [ngModelOptions]="{standalone: true}">
               </mat-form-field>
             </td>
 
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Ciudad" [(ngModel)]="selectedItem.ciudad" [ngModelOptions]="{standalone: true}" disabled>
+                <input matInput placeholder="Ciudad" [(ngModel)]="selectedItem.ciudad" [ngModelOptions]="{standalone: true}">
               </mat-form-field>
             </td>
           </tr>
@@ -61,13 +61,13 @@
           <tr>
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Telf/Celular" [(ngModel)]="selectedItem.celular" [ngModelOptions]="{standalone: true}" disabled>
+                <input matInput placeholder="Telf/Celular" [(ngModel)]="selectedItem.celular" [ngModelOptions]="{standalone: true}">
               </mat-form-field>
             </td>
 
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Correo" [(ngModel)]="selectedItem.correo" [ngModelOptions]="{standalone: true}" disabled>
+                <input matInput placeholder="Correo" [(ngModel)]="selectedItem.correo" [ngModelOptions]="{standalone: true}">
               </mat-form-field>
             </td>
           </tr>
@@ -117,21 +117,6 @@
           <tr>
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Recibo" [(ngModel)]="selectedItem.recibo" [ngModelOptions]="{standalone: true}" disabled>
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="full-width">
-                <input matInput placeholder="Fecha" [(ngModel)]="selectedItem.fecha" [ngModelOptions]="{standalone: true}" disabled>
-              </mat-form-field>
-            </td>
-          </tr>
-        </table>
-
-        <table cellspacing="0">
-          <tr>
-            <td>
-              <mat-form-field class="full-width">
                 <input matInput placeholder="Libro" [(ngModel)]="selectedItem.libro" [ngModelOptions]="{standalone: true}" disabled>
               </mat-form-field>
             </td>
@@ -157,8 +142,28 @@
 
     <nav>
       <h3>Informacion del Pago</h3>
+      <form class="form-container" *ngIf="selectedItem.tipoDePago">
+        <table cellspacing="0">
+          <tr>
+            <td class="single-option">
+              <mat-form-field>
+                <mat-select placeholder="Tipo de Pago" [value]="selectedItem.tipoDePago" [(ngModel)]="selectedItem.tipoDePago" [ngModelOptions]="{standalone: true}"  disabled>
+                  <mat-option value="Efectivo">Efectivo</mat-option>
+                  <mat-option value="Tarjeta">Tarjeta</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
 
-      <form class="form-container">
+            <td>
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Persona que Recibio" [(ngModel)]="selectedItem.pagoEfectivoPersonaQueRecibio" [ngModelOptions]="{standalone: true}"  disabled>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+
+      <form class="form-container" *ngIf="!selectedItem.tipoDePago">
         <mat-form-field class="full-width">
           <input matInput placeholder="Pago Efectivo / Persona que Recibio" [(ngModel)]="selectedItem.pagoEfectivoPersonaQueRecibio" [ngModelOptions]="{standalone: true}" disabled>
         </mat-form-field>
@@ -203,6 +208,8 @@
           </tr>
         </table>
       </form>
+
+      <button mat-raised-button class="new-entry" color="primary" (click)="updateItem()" [disabled]="!isValid">ACTUALIZAR</button>
     </nav>
   </div>
 </div>

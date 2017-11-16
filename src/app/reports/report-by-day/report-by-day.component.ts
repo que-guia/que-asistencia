@@ -14,7 +14,6 @@ import { AppDatabaseService } from '../../app-database.service';
 
 export class ReportByDayComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
-  @Input() date: string;
   
   dataSource: TableDataSource | null;
   tableDB: TableDatabase | null;
@@ -24,7 +23,7 @@ export class ReportByDayComponent implements OnInit {
   constructor(private db: AppDatabaseService) { }
 
   ngOnInit() {
-    this.tableDB = new TableDatabase(this.db, this.date);
+    this.tableDB = new TableDatabase(this.db);
     this.dataSource = new TableDataSource(this.tableDB);
 
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
@@ -44,10 +43,10 @@ export class TableDatabase {
     return this.dataChange.value;
   }
 
-  constructor(private db: AppDatabaseService, private date: string) {
+  constructor(private db: AppDatabaseService) {
     this.db.loadRegisteredItems();
     
-    this.db.registeredItems[date].subscribe(data => {
+    this.db.registeredItems.subscribe(data => {
       this.dataChange.next(data as RegisterItem[]);
     });
   }

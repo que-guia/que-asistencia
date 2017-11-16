@@ -1,4 +1,5 @@
 export class Item {
+  id: string;
   recibo: Number;
   coordinador: String;
   fecha: Date;
@@ -21,6 +22,8 @@ export class Item {
   pagoPorBisaUsd: String;
   pagoPorKhipu: String;
   pagoEfectivoPersonaQueRecibio: String;
+  hasProblemWithCI: boolean;
+  tipoDePago: string;
 
   constructor() {
     this.libro = 'NO';
@@ -33,5 +36,6 @@ export class Item {
     this.pagoPorBisaBs = 'NO';
     this.pagoPorBisaUsd = 'NO';
     this.pagoPorKhipu = 'NO';
+    this.tipoDePago = 'Efectivo';
   }
 }

@@ -28,18 +28,20 @@ export class RegisterItemComponent implements OnInit {
   nameCtrl: FormControl;
   options: FormGroup;
   items: Item[];
+  registeredItems: RegisterItem[] = [];
   filteredItems: Observable<any[]>;
-  filteredItemsByName: Observable<any[]>;
   @Input() selectedItem: Item;
   registeredItem: AfoObjectObservable<Item>;
   filteredCI: string;
   materialWasDelivered: boolean;
-
-  reactiveItems: AfoListObservable<any[]>;
+  materialWasDeliveredIsValid: boolean = true;
+  materialDeliveryDate: string;
+  message = 'Material entregado';
+  isValid = false;
   
   constructor(private fb: FormBuilder,
               private snackBar: MatSnackBar,
-              private appDatabase: AppDatabaseService,
+              private db: AppDatabaseService,
               private offlineDatabase: AngularFireOfflineDatabase) {
 
     this.selectedItem = new Item();
@@ -50,36 +52,28 @@ export class RegisterItemComponent implements OnInit {
       floatPlaceholder: 'auto',
     });
 
+    this.db.loadRegisteredItems();
+    this.db.items.subscribe(data => this.items = data);
+    this.db.registeredItems.subscribe(data => this.registeredItems = data);
+
     this.filteredItems = this.stateCtrl.valueChanges
       .debounceTime(100)
       .startWith(null)
       .map(item => item ? this.filterItems(item) : null);
-
-    this.reactiveItems = this.offlineDatabase.list('/items');
   }
 
-  ngOnInit() {
-    this.appDatabase.items.subscribe(data => this.items = data)
-  }
+  ngOnInit() {}
 
   registerItem() {
-    const itemID = this.selectedItem.ci ? `${this.selectedItem.ci}`.replace(/\s/g,'').replace('-', '_') : shortid.generate();
-    const itemToRegister = new RegisterItem(this.selectedItem, this.materialWasDelivered);
+    const itemToRegister = new RegisterItem(this.selectedItem, this.materialWasDelivered, this.materialDeliveryDate);
     
-    const item = this.offlineDatabase.object(`/registered-items/${itemID}`);
+    const item = this.offlineDatabase.object(`/registered-items/${this.selectedItem.id}`);
     item.subscribe(dbItem => {
       itemToRegister.dateEntries = dbItem['dateEntries'] || [];
     })
 
     const newEntryDate = moment(Date.now()).format(FORMAT_DATE_COMPLETE);
-    const indexDateEntry = _.findIndex(itemToRegister.dateEntries,
-      dataEntry => moment(dataEntry, FORMAT_DATE_COMPLETE).isSame(Date.now(), 'day'));
-    
-    if (indexDateEntry >= 0) {
-      itemToRegister.dateEntries[indexDateEntry] = newEntryDate;
-    } else {
-      itemToRegister.dateEntries.push(newEntryDate);
-    }
+    itemToRegister.dateEntries.push(newEntryDate);
 
     item
       .update(itemToRegister)
@@ -94,6 +88,7 @@ export class RegisterItemComponent implements OnInit {
     this.materialWasDelivered = false;
     this.selectedItem = new Item();
     this.filteredCI = '';
+    this.isValid = false;
   }
 
   filterItems(text: string) {
@@ -104,7 +99,19 @@ export class RegisterItemComponent implements OnInit {
   }
 
   selectItem(item) {
+    this.isValid = true;
     this.selectedItem = item;
+    const registedItem = _.findWhere(this.registeredItems, {id: item.id});
+    this.materialWasDelivered = false;
+    this.materialWasDeliveredIsValid = true;
+    this.message = 'Material entregado';
+
+    if (registedItem) {
+      this.materialWasDeliveredIsValid = false;
+      this.materialWasDelivered = registedItem.materialWasDelivered;
+      this.materialDeliveryDate = registedItem.materialDeliveryDate;
+      this.message = 'Material ya fue entregado';
+    }
   }
 
   ciHasChanged() {

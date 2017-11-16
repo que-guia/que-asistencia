@@ -48,6 +48,16 @@
             </td>
           </tr>
         </table>
+
+        <table cellspacing="0">
+          <tr>
+            <td>
+              <mat-checkbox [(ngModel)]="isValidCI" [disabled]="!allowNoValidCI" [ngModelOptions]="{standalone: true}">
+                Registar con problemas en CI
+              </mat-checkbox>
+            </td>
+          </tr>
+        </table>
       </form>
     </nav>
 
@@ -58,28 +68,6 @@
         <mat-form-field class="full-width">
           <input matInput placeholder="Coordinador" [(ngModel)]="item.coordinador" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
-
-        <!-- <table cellspacing="0">
-          <tr>
-            <td>
-              <mat-form-field class="full-width">
-                <input matInput placeholder="Coordinador" [(ngModel)]="item.coordinador" [ngModelOptions]="{standalone: true}">
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="full-width">
-                <input matInput placeholder="Recibo" [(ngModel)]="item.recibo" [ngModelOptions]="{standalone: true}">
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="full-width">
-                <input matInput [matDatepicker]="pickerFechaRegistro" placeholder="Fecha de Registro" [(ngModel)]="item.fechaRegistro" [ngModelOptions]="{standalone: true}" disabled>
-                <mat-datepicker-toggle matSuffix [for]="pickerFechaRegistro"></mat-datepicker-toggle>
-                <mat-datepicker #pickerFechaRegistro></mat-datepicker>
-              </mat-form-field>
-            </td>
-          </tr>
-        </table> -->
       </form>
     </nav>
 
@@ -129,7 +117,7 @@
           <tr>
             <td>
               <mat-form-field>
-                <mat-select placeholder="Libro" [value]="item.libro">
+                <mat-select placeholder="Libro" [value]="item.libro" [(ngModel)]="item.libro" [ngModelOptions]="{standalone: true}">
                   <mat-option value="SI">SI</mat-option>
                   <mat-option value="NO">NO</mat-option>
                 </mat-select>
@@ -137,7 +125,7 @@
             </td>
             <td>
               <mat-form-field>
-                <mat-select placeholder="Entregado" [value]="item.libroEntregado">
+                <mat-select placeholder="Entregado" [value]="item.libroEntregado" [(ngModel)]="item.libroEntregado" [ngModelOptions]="{standalone: true}">
                   <mat-option value="SI">SI</mat-option>
                   <mat-option value="NO">NO</mat-option>
                 </mat-select>
@@ -160,73 +148,23 @@
 
     <nav>
       <h3>Informacion del Pago</h3>
-
       <form class="form-container">
         <table cellspacing="0">
           <tr>
             <td class="single-option">
               <mat-form-field>
-                <mat-select placeholder="Pago Efectivo" [value]="item['pago-efectivo']">
-                  <mat-option value="SI">SI</mat-option>
-                  <mat-option value="NO">NO</mat-option>
+                <mat-select placeholder="Tipo de Pago" [value]="item.tipoDePago" [(ngModel)]="item.tipoDePago" [formControl]="tipoDePago" required>
+                  <mat-option value="Efectivo">Efectivo</mat-option>
+                  <mat-option value="Tarjeta">Tarjeta</mat-option>
                 </mat-select>
+                <mat-error *ngIf="tipoDePago.invalid">{{ getErrorMessage('tipoDePago') }}</mat-error>
               </mat-form-field>
             </td>
 
             <td>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Persona que Recibio" [formControl]="personaQueRecibio" [(ngModel)]="item['persona-que-recibio']" required>
+                <input matInput placeholder="Persona que Recibio" [formControl]="personaQueRecibio" [(ngModel)]="item.pagoEfectivoPersonaQueRecibio" required>
                 <mat-error *ngIf="personaQueRecibio.invalid">{{ getErrorMessage('personaQueRecibio') }}</mat-error>
-              </mat-form-field>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              <mat-form-field class="full-width">
-                <input matInput placeholder="A Cuenta" [(ngModel)]="item.aCuenta" [ngModelOptions]="{standalone: true}">
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="full-width">
-                <input matInput placeholder="Saldo" [(ngModel)]="item.saldo" [ngModelOptions]="{standalone: true}">
-              </mat-form-field>
-            </td>
-          </tr>
-        </table>
-
-        <table cellspacing="0">
-          <tr>
-            <td>
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Wester Union" [value]="item.pagoPorWesterUnion">
-                  <mat-option value="SI">SI</mat-option>
-                  <mat-option value="NO">NO</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Bisa BS" [value]="item.pagoPorBisaBs">
-                  <mat-option value="SI">SI</mat-option>
-                  <mat-option value="NO">NO</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Bisa $" [value]="item.pagoPorBisaUsd">
-                  <mat-option value="SI">SI</mat-option>
-                  <mat-option value="NO">NO</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Khipu" [value]="item.pagoPorKhipu">
-                  <mat-option value="SI">SI</mat-option>
-                  <mat-option value="NO">NO</mat-option>
-                </mat-select>
               </mat-form-field>
             </td>
           </tr>

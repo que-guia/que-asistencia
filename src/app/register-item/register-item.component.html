@@ -43,12 +43,13 @@
       
       <div class="mat-input-wrapper mat-form-field-wrapper checkbox">
         <mat-checkbox formControlName="hideRequired"
-                      [(ngModel)]="materialWasDelivered">
-          Material entregado</mat-checkbox>
+                      [(ngModel)]="materialWasDelivered" [disabled]="!materialWasDeliveredIsValid">
+          {{ message }}
+        </mat-checkbox>
       </div>
     </form>
 
-    <button mat-raised-button color="primary" (click)="registerItem()">REGISTRAR</button>
+    <button mat-raised-button color="primary" (click)="registerItem()" [disabled]="!isValid">REGISTRAR</button>
 
     <div class="progress-detail">
       <!-- <mat-spinner></mat-spinner> -->
