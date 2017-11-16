@@ -12,6 +12,33 @@ button.mat-primary {
   background-color: #0288d1;
 
   &.new-entry {
-    margin: 16px 40px 40px;
+    margin: 16px 16px 40px;
+  }
+}
+
+mat-form-field.filter-person {
+  width: ~"calc(100% - 80px)";
+  background-color: rgb(255, 255, 255);
+  padding: 40px 40px 0px;
+}
+
+.close-editor {
+  position: absolute;
+  right: -12px;
+  top: -12px;
+  width: 32px;
+  height: 32px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  cursor: pointer;
+
+  .mat-icon {
+    margin-top: 4px;
+  }
+
+  &:hover {
+    color: #e53935;
   }
 }

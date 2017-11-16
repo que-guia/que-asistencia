@@ -10,7 +10,7 @@
         <input matInput placeholder="CI" aria-label="CI" [matAutocomplete]="auto" 
               [formControl]="stateCtrl" [(ngModel)]="filteredCI" (ngModelChange)="ciHasChanged()">
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let item of filteredItems | async" [value]="item.ci" (click)="selectItem(item)">
+          <mat-option *ngFor="let item of filteredItems | async" [value]="item.ci" (onSelectionChange)="selectItem(item)">
             <div class="line ci">
               <span>CI: </span> {{ item.ci }}
             </div>

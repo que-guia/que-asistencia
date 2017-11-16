@@ -12,7 +12,6 @@
         <mat-form-field class="full-width">
           <input matInput placeholder="Nombre" [formControl]="nombre" [(ngModel)]="item.nombre" required>
           <mat-error *ngIf="nombre.invalid">{{ getErrorMessage('nombre') }}</mat-error>
-          <!-- <mat-error *ngIf="ciInvalid">EL CI ya se encuentra en uso</mat-error> -->
         </mat-form-field>
 
         <table cellspacing="0">

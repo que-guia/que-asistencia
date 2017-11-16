@@ -1,32 +1,64 @@
 <div class="viewer-wrapper">
-  <div class="viewer-title">
-    <i class="fa fa-user" aria-hidden="true"></i>
-    Buscar Inscrito
-  </div>
+  <mat-tab-group (selectChange)="tabChanged($event)">
+    <mat-tab label="Registrados">
+      <div class="viewer-body">
+        <form class="form-container" [formGroup]="options">
+          <mat-form-field>
+            <input type="text" placeholder="Buscar Persona" aria-label="Persona" matInput [formControl]="stateCtrl" [matAutocomplete]="auto"
+              [(ngModel)]="searchText" (ngModelChange)="textHasChanged()">
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let option of filteredItems | async" [value]="option" (onSelectionChange)="selectItem(option)">
+                <div class="line ci">
+                  <span>CI: </span> {{ option.ci }}
+                </div>
+                <div class="line name">
+                  <span>Nombre: </span>{{ option.nombre }}
+                </div>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
 
-  <div class="viewer-body">
-    <form class="form-container" [formGroup]="options">
-      <mat-form-field>
-        <input type="text" placeholder="Persona" aria-label="Persona" matInput [formControl]="stateCtrl" [matAutocomplete]="auto"
-          [(ngModel)]="searchText" (ngModelChange)="textHasChanged()">
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let option of filteredItems | async" [value]="option" (click)="selectItem(option)">
-            <div class="line ci">
-              <span>CI: </span> {{ option.ci }}
-            </div>
-            <div class="line name">
-              <span>Nombre: </span>{{ option.nombre }}
-            </div>
-          </mat-option>
-        </mat-autocomplete>
+        <button mat-raised-button color="primary" (click)="findItem()">BUSCAR</button>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Problemas con CI">
+      <mat-form-field class="filter-person" floatPlaceholder="never">
+        <input matInput #filter placeholder="Buscar Persona">
+        <mat-icon matSuffix>person</mat-icon>
       </mat-form-field>
-    </form>
 
-    <button mat-raised-button color="primary" (click)="findItem()">BUSCAR</button>
-  </div>
+      <mat-table #table [dataSource]="dataSource">
+        <ng-container matColumnDef="ci">
+          <mat-header-cell *matHeaderCellDef> CI </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.ci }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+          <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.nombre }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="update">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <a mat-raised-button routerLink="." (click)=selectItem(row)>Actualizar</a>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 
 <div class="viewer-wrapper" *ngIf="selectedItem">
+  <div class="close-editor" (click)="cleanSelectedItem()">
+    <mat-icon>close</mat-icon>
+  </div>
   <div class="viewer-title">
     <i class="fa fa-info-circle" aria-hidden="true"></i>
     Detalles
@@ -72,6 +104,16 @@
             </td>
           </tr>
         </table>
+
+        <table cellspacing="0">
+            <tr>
+              <td>
+                <mat-checkbox [(ngModel)]="selectedItem.hasProblemWithCI" disabled [ngModelOptions]="{standalone: true}">
+                  Problemas en el CI
+                </mat-checkbox>
+              </td>
+            </tr>
+          </table>
       </form>
     </nav>
 
@@ -210,6 +252,7 @@
       </form>
 
       <button mat-raised-button class="new-entry" color="primary" (click)="updateItem()" [disabled]="!isValid">ACTUALIZAR</button>
+      <button mat-raised-button class="new-entry" (click)="cleanSelectedItem()">CERRAR</button>      
     </nav>
   </div>
 </div>

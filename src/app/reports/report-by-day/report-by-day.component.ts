@@ -61,14 +61,12 @@ export class TableDataSource extends DataSource<any> {
     super();
   }
 
-  // Connect function called by the table to retrieve one stream containing the data to render.
   connect(): Observable<RegisterItem[]> {
     const displayDataChanges = [
       this.db.dataChange,
       this._filterChange,
     ];
 
-    // return this.db.list('registered-items');
     return Observable.merge(...displayDataChanges).map(() => {
       return this.db.data.slice().filter((item: RegisterItem) => {
         return item.nombre.toLowerCase().indexOf(this.filter.toLowerCase()) != -1;
