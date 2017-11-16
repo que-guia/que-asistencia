@@ -30,16 +30,20 @@ export class AppDatabaseService {
     this.db.list('items').subscribe(data => {
       // Bulk
       const items = data as Item[];
-      _.each(items, ({ci, nombre, ciudad, celular, correo}) => {
-        const foundIndex = _.findIndex(this.currentItems, item => `${item.ci}` === `${ci}`);
-        
-        if (foundIndex >= 0) {
-          _.extend(this.currentItems[foundIndex], {ci, nombre, ciudad, celular, correo});  
-        }
+      _.each(items.filter(({hasProblemWithCI}) => !hasProblemWithCI),
+        item => {
+          const {id, ci, nombre, ciudad, celular, correo} = item;
+          const foundIndex = _.findIndex(this.currentItems, item => `${ci}` === `${item.ci}`)
+          
+          if (foundIndex >= 0) {
+            _.extend(this.currentItems[foundIndex], {id, ci, nombre, ciudad, celular, correo});  
+          } else {
+            this.currentItems.push(item);
+          }
       });
 
       // Publish
-      this.items.next([...this.currentItems, ...items]);
+      this.items.next([...this.currentItems, ...(items || []).filter(({hasProblemWithCI}) => hasProblemWithCI)]);
     });
   }
 

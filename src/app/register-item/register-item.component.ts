@@ -16,6 +16,7 @@ import { RegisterItem } from '../data-transfer-objects/register-item.class';
 import { FORMAT_DATE_COMPLETE } from '../app.constants';
 
 import { RegisterItemMessageComponent } from './register-item-message/register-item-message.component';
+import { debug } from 'util';
 
 @Component({
   selector: 'register-item',
@@ -67,7 +68,7 @@ export class RegisterItemComponent implements OnInit {
   registerItem() {
     const itemToRegister = new RegisterItem(this.selectedItem, this.materialWasDelivered, this.materialDeliveryDate);
     
-    const item = this.offlineDatabase.object(`/registered-items/${this.selectedItem.id}`);
+    const item = this.offlineDatabase.object(`/registered-items/${itemToRegister.id}`);
     item.subscribe(dbItem => {
       itemToRegister.dateEntries = dbItem['dateEntries'] || [];
     })
@@ -80,6 +81,24 @@ export class RegisterItemComponent implements OnInit {
       .then(() => {
         console.info('ITEM has been registered');
       });
+
+    if (!this.selectedItem.id) {      
+      const itemDB = this.offlineDatabase.object(`/items/${itemToRegister.id}`);
+
+      itemDB
+        .update({
+          id: itemToRegister.id,
+          ci: itemToRegister.ci,
+          nombre: this.selectedItem.nombre,
+          ciudad: this.selectedItem.ciudad,
+          celular: this.selectedItem.celular,
+          correo: this.selectedItem.correo,
+          hasProblemWithCI: this.selectedItem.hasProblemWithCI || false
+        })
+        .then(() => {
+          console.info('ITEM has been registered');
+        });
+    }
 
     this.snackBar.openFromComponent(RegisterItemMessageComponent, {
       duration: 800,

@@ -17,7 +17,9 @@
     "package-linux": "electron-packager . que-asistencia-app --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
     "create-installer-mac": "electron-installer-dmg ./release-builds/Electron\\ tutorial\\ app-darwin-x64/Electron\\ tutorial\\ app.app que-asistencia-app --out=release-builds --overwrite --icon=assets/icons/mac/icon.icns",
     "create-installer-win": "node installers/windows/createinstaller.js",
-    "create-debian-installer": "electron-installer-debian --src release-builds/que-asistencia-app-linux-x64/ --arch amd64 --config debian.json"
+    "create-debian-installer": "electron-installer-debian --src release-builds/que-asistencia-app-linux-x64/ --arch amd64 --config debian.json",
+  
+    "feria": "npm run build && npm run package-win && npm run create-installer-win"
   },
   "main": "main.js",
   "private": true,
