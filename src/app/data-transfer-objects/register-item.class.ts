@@ -10,11 +10,11 @@ export class RegisterItem {
   materialDeliveryDate: string;
   dateEntries: string[];
 
-  constructor(item: any, materialWasDelivered = false, materialDeliveryDate = '') {
+  constructor(item: any, materialDeliveryDate: string = '') {
     this.id = item.id  ? item.id : item.ci ? `${item.ci}`.replace(/\s/g,'').replace('-', '_') : shortid.generate();
     this.ci = item.ci;
     this.nombre = item.nombre;
-    this.materialWasDelivered = materialWasDelivered;
+    this.materialWasDelivered = item.materialWasDelivered;
     this.materialDeliveryDate = materialDeliveryDate || moment(Date.now()).format(FORMAT_DATE_COMPLETE);
     this.dateEntries = [];
   }

@@ -17,6 +17,7 @@ import { FORMAT_DATE_COMPLETE } from '../app.constants';
 
 import { RegisterItemMessageComponent } from './register-item-message/register-item-message.component';
 import { debug } from 'util';
+import { DebugElement } from '@angular/core/src/debug/debug_node';
 
 @Component({
   selector: 'register-item',
@@ -34,12 +35,12 @@ export class RegisterItemComponent implements OnInit {
   @Input() selectedItem: Item;
   registeredItem: AfoObjectObservable<Item>;
   filteredCI: string;
-  materialWasDelivered: boolean;
-  materialWasDeliveredIsValid: boolean = true;
-  materialDeliveryDate: string;
+  materialDeliveryDate: string = '';
   message = 'Material entregado';
   isValid = false;
-  
+  materialWasDelivered = false;
+  materialWasAlreadyDelivered = false;
+
   constructor(private fb: FormBuilder,
               private snackBar: MatSnackBar,
               private db: AppDatabaseService,
@@ -66,7 +67,8 @@ export class RegisterItemComponent implements OnInit {
   ngOnInit() {}
 
   registerItem() {
-    const itemToRegister = new RegisterItem(this.selectedItem, this.materialWasDelivered, this.materialDeliveryDate);
+    const itemToRegister = new RegisterItem(this.selectedItem, this.materialDeliveryDate);
+    itemToRegister.materialWasDelivered = this.materialWasDelivered;
     
     const item = this.offlineDatabase.object(`/registered-items/${itemToRegister.id}`);
     item.subscribe(dbItem => {
@@ -104,7 +106,6 @@ export class RegisterItemComponent implements OnInit {
       duration: 800,
     });
 
-    this.materialWasDelivered = false;
     this.selectedItem = new Item();
     this.filteredCI = '';
     this.isValid = false;
@@ -119,26 +120,29 @@ export class RegisterItemComponent implements OnInit {
 
   selectItem(item) {
     this.isValid = true;
-    this.selectedItem = item;
-    const registedItem = _.findWhere(this.registeredItems, {id: item.id});
+    this.selectedItem = _.clone(item);
     this.materialWasDelivered = false;
-    this.materialWasDeliveredIsValid = true;
+    this.materialWasAlreadyDelivered = false;
     this.message = 'Material entregado';
+    this.filteredCI = `${this.selectedItem.ci}, ${this.selectedItem.nombre}`;
+    
+    const registedItem = _.findWhere(this.registeredItems, {id: item.id});
 
     if (registedItem) {
-      this.materialWasDeliveredIsValid = false;
       this.materialWasDelivered = registedItem.materialWasDelivered;
       this.materialDeliveryDate = registedItem.materialDeliveryDate;
-      this.message = 'Material ya fue entregado';
+      this.message = registedItem.materialWasDelivered ? 'Material ya fue entregado' : 'Material entregado';
+      this.materialWasAlreadyDelivered = registedItem.materialWasDelivered;
     }
   }
 
   ciHasChanged() {
-    if (!this.filteredCI) {
-      this.selectedItem.nombre = '';
-      this.selectedItem.ciudad = '';
-      this.selectedItem.celular = ''; 
-      this.selectedItem.correo = '';      
+    if (!this.filteredCI) {      
+      this.selectedItem = null;
     }
+  }
+
+  displayFn(item: Item): String {
+    return item ? `${item.ci}, ${item.nombre}` : null;
   }
 }

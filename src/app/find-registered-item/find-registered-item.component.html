@@ -6,7 +6,8 @@
           <mat-form-field>
             <input type="text" placeholder="Buscar Persona" aria-label="Persona" matInput [formControl]="stateCtrl" [matAutocomplete]="auto"
               [(ngModel)]="searchText" (ngModelChange)="textHasChanged()">
-            <mat-icon matSuffix>person</mat-icon>
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-icon class="close" *ngIf="(searchText || '').length > 0 || selectedItem" matSuffix (click)="filteredCI = ''">close</mat-icon>
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
               <mat-option *ngFor="let option of filteredItems | async" [value]="option" (onSelectionChange)="selectItem(option)">
                 <div class="line ci">
